@@ -8,6 +8,8 @@ from classes.PageNumbers import PageNumbers
 # set FLASK_APP=hello
 # flask run
 
+# Testing
+
 app = Flask(__name__, instance_relative_config=True)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
