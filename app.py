@@ -56,7 +56,12 @@ def apply_headers_route():
     FILE.initialize_uploaded_document(file_name, file_path)
 
     NewHeaders.applyHeaders(headers)
-    return send_file(file_path)
+    new_file_path = FILE.data['filePath']
+    res = make_response(send_file(new_file_path))
+    res.headers['X-filePath'] = file_path
+
+    FILE.close()  # Simulate heroku
+    return res
 
 
 @app.route('/pageNumbers/apply', methods=['POST'])
