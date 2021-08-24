@@ -92,6 +92,7 @@ class NewHeaders:
         # open_file.close()
         new_file_path = get_tmp_path()
         open_file.save(new_file_path)
+        FILE.data['filePath'] = new_file_path
 
         return {}
 
