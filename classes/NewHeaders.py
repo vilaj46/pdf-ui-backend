@@ -93,7 +93,9 @@ class NewHeaders:
         open_file.close()
         FILE.data['filePath'] = new_file_path
 
+        print("APPLIED HEADERS")
         print(FILE)
+        print("----------------------")
 
         return {}
 
