@@ -88,14 +88,12 @@ class NewHeaders:
 
                     open_file.setMetadata(new_metadata)
 
-        new_file_path = get_tmp_path()
-        open_file.save(new_file_path)
+        open_file.saveIncr()
         open_file.close()
-        FILE.data['filePath'] = new_file_path
-
-        print("APPLIED HEADERS")
-        print(FILE)
-        print("----------------------")
+        # new_file_path = get_tmp_path()
+        # open_file.save(new_file_path)
+        # open_file.close()
+        # FILE.data['filePath'] = new_file_path
 
         return {}
 

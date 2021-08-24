@@ -32,9 +32,12 @@ def upload_route():
         FILE.upload(request.files['file'])
         page_count = FILE.data["pageCount"]
         file_path = FILE.data['filePath']
-        print(FILE)
+        file_name = FILE.data['fileName']
         res = make_response(send_file(file_path))
         res.headers['X-PageCount'] = page_count
+        res.headers['X-fileName'] = file_name
+        res.headers['X-filePath'] = file_path
+        FILE.close()  # Simulate heroku
         return res
     elif request.method == 'PUT':
         FILE.close()
@@ -47,10 +50,12 @@ def upload_route():
 
 @app.route('/headers/apply', methods=['POST'])
 def apply_headers_route():
-    print(FILE)
     headers = request.form["headers"]
+    file_name = request.form['fileName']
+    file_path = request.form['filePath']
+    FILE.initialize_uploaded_document(file_name, file_path)
+
     NewHeaders.applyHeaders(headers)
-    file_path = FILE.data['filePath']
     return send_file(file_path)
 
 

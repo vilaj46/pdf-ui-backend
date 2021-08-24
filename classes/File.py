@@ -14,6 +14,17 @@ class File:
         self.data = {}
         self.doc = {}
 
+    def initialize_uploaded_document(self, file_name, file_path):
+        open_file = fitz.open(file_path, filetype="pdf")
+        self.doc = open_file
+        self.data = {
+            "fileName": file_name,
+            "filePath": file_path,
+            "pageCount": open_file.pageCount
+
+        }
+        return self.data
+
     def upload(self, file_storage):
         file_name = file_storage.filename
 
