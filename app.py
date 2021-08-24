@@ -49,6 +49,7 @@ def apply_headers_route():
     headers = request.form["headers"]
     NewHeaders.applyHeaders(headers)
     file_path = FILE.data['filePath']
+    print(file_path)
     return send_file(file_path)
 
 
