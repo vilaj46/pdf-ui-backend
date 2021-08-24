@@ -47,9 +47,9 @@ def upload_route():
 
 @app.route('/headers/apply', methods=['POST'])
 def apply_headers_route():
+    print(FILE)
     headers = request.form["headers"]
     NewHeaders.applyHeaders(headers)
-    print(FILE)
     file_path = FILE.data['filePath']
     return send_file(file_path)
 
