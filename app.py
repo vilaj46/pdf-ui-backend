@@ -1,4 +1,5 @@
 import os
+import fitz
 from api import FILE
 from flask import Flask, request, send_file, make_response
 from flask_cors import CORS
@@ -33,7 +34,7 @@ def upload_route():
         # return send_file("./tmp/test.pdf")
         res = make_response(send_file("./tmp/test.pdf"))
         res.headers['X-PageCount'] = page_count
-        print(os.listdir("./tmp"))
+        # print(os.listdir("./tmp"))
         return res
     elif request.method == 'PUT':
         FILE.close()
@@ -48,6 +49,8 @@ def upload_route():
 def apply_headers_route():
     headers = request.form["headers"]
     NewHeaders.applyHeaders(headers)
+    testing = fitz.open("./tmp/test.pdf", filetype="pdf")
+    print(testing.metadata)
     return send_file("./tmp/test.pdf")
 
 
