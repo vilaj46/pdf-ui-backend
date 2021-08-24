@@ -32,6 +32,7 @@ def upload_route():
         FILE.upload(request.files['file'])
         page_count = FILE.data["pageCount"]
         file_path = FILE.data['filePath']
+        print(FILE)
         res = make_response(send_file(file_path))
         res.headers['X-PageCount'] = page_count
         return res
@@ -48,8 +49,8 @@ def upload_route():
 def apply_headers_route():
     headers = request.form["headers"]
     NewHeaders.applyHeaders(headers)
+    print(FILE)
     file_path = FILE.data['filePath']
-    print(file_path)
     return send_file(file_path)
 
 

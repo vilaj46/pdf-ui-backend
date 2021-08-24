@@ -1,6 +1,6 @@
 import fitz
 import json
-
+import os
 from api import FILE
 from classes.Metadata import Metadata
 from classes.Redactor import Redactor
@@ -92,6 +92,7 @@ class NewHeaders:
         # open_file.close()
         new_file_path = get_tmp_path()
         open_file.save(new_file_path)
+        open_file.close()
         FILE.data['filePath'] = new_file_path
 
         return {}
