@@ -38,8 +38,10 @@ class Redactor:
         # _wrapContents is needed for fixing
         # alignment issues with rect boxes in some
         # cases where there is alignment issue
-        self.page._wrapContents()
-
+        try:
+            self.page._wrapContents()
+        except:
+            not_sure = "not_sure"
         # geting the rect boxes which consists the matching email regex
         sensitive = self.get_sensitive_data(self.text_for_redaction, self.page.getText("text")
                                             .split('\n'))

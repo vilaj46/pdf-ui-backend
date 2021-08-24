@@ -1,5 +1,4 @@
-import os
-import fitz
+import json
 from api import FILE
 from flask import Flask, request, send_file, make_response
 from flask_cors import CORS
@@ -8,8 +7,6 @@ from classes.PageNumbers import PageNumbers
 
 # set FLASK_APP=hello
 # flask run
-
-# Testing
 
 app = Flask(__name__, instance_relative_config=True)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -33,10 +30,12 @@ def upload_route():
         page_count = FILE.data["pageCount"]
         file_path = FILE.data['filePath']
         file_name = FILE.data['fileName']
+        metadata = FILE.data['metadata']
         res = make_response(send_file(file_path))
         res.headers['X-PageCount'] = page_count
         res.headers['X-fileName'] = file_name
         res.headers['X-filePath'] = file_path
+        res.headers['X-metadata'] = metadata
         FILE.close()  # Simulate heroku
         return res
     elif request.method == 'PUT':
@@ -53,12 +52,15 @@ def apply_headers_route():
     headers = request.form["headers"]
     file_name = request.form['fileName']
     file_path = request.form['filePath']
-    FILE.initialize_uploaded_document(file_name, file_path)
+    old_metadata = request.form['metadata']
+    FILE.initialize_uploaded_document(file_name, file_path, old_metadata)
 
     NewHeaders.applyHeaders(headers)
     new_file_path = FILE.data['filePath']
+    metadata = FILE.data['metadata']
     res = make_response(send_file(new_file_path))
     res.headers['X-filePath'] = file_path
+    res.headers['X-metadata'] = json.dumps(metadata)
 
     FILE.close()  # Simulate heroku
     return res

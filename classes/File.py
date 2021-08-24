@@ -1,5 +1,6 @@
 import json
 import fitz
+import ast
 
 from utilities.misc.get_tmp_path import get_tmp_path
 from utilities.misc.allowed_file import allowed_file
@@ -14,14 +15,17 @@ class File:
         self.data = {}
         self.doc = {}
 
-    def initialize_uploaded_document(self, file_name, file_path):
+    def initialize_uploaded_document(self, file_name, file_path, metadata):
         open_file = fitz.open(file_path, filetype="pdf")
         self.doc = open_file
+        corrected_metadata = self.create_metadata(
+            metadata, self.doc.metadata)
+
         self.data = {
             "fileName": file_name,
             "filePath": file_path,
-            "pageCount": open_file.pageCount
-
+            "pageCount": open_file.pageCount,
+            "metadata": corrected_metadata
         }
         return self.data
 
@@ -42,7 +46,8 @@ class File:
             self.data = {
                 'fileName': file_name,
                 'filePath': file_path,
-                'pageCount': self.doc.pageCount
+                'pageCount': self.doc.pageCount,
+                'metadata': self.doc.metadata,
             }
 
             self.doc.save(file_path)
@@ -101,6 +106,14 @@ class File:
             return True
         else:
             return False
+
+    def create_metadata(self, new_metadata, blank_metadata):
+        replaced = new_metadata.replace("None", '"None"')
+        replaced_second = replaced.replace("null", '"null"')
+        ast_metadata = ast.literal_eval(replaced_second)
+        keywords = ast.literal_eval(ast_metadata['keywords'])
+        blank_metadata['keywords'] = keywords
+        return blank_metadata
 
     def __str__(self):
         return json.dumps(self.data)

@@ -10,6 +10,7 @@ from utilities.misc.get_tmp_path import get_tmp_path
 
 class NewHeaders:
     def applyHeaders(headers):
+        metadata_for_new_file = {}
 
         if FILE.data == {} or len(FILE.data.keys()) == 0:
             return
@@ -17,8 +18,7 @@ class NewHeaders:
         loaded_headers = json.loads(headers)
         headers_keys = loaded_headers.keys()
         open_file = fitz.open(FILE.data["filePath"], filetype="pdf")
-        metadata = open_file.metadata
-        m_d = Metadata(metadata)
+        m_d = Metadata(FILE.data["metadata"])
 
         for key in headers_keys:
             header = loaded_headers[key]
@@ -58,6 +58,7 @@ class NewHeaders:
                     True, text, page_header_appears_on, open_file)
 
                 open_file.setMetadata(new_metadata)
+                metadata_for_new_file = new_metadata
             else:
                 start_page = int(header["startPage"]) - 1
                 end_page = int(header["endPage"])
@@ -87,14 +88,15 @@ class NewHeaders:
                         True, text, i, open_file)
 
                     open_file.setMetadata(new_metadata)
+                    metadata_for_new_file = new_metadata
 
-        # open_file.saveIncr()
-        # open_file.close()
         new_file_path = get_tmp_path()
+        open_file.setMetadata(metadata_for_new_file)
         open_file.save(new_file_path)
         open_file.close()
-        FILE.data['filePath'] = new_file_path
 
+        FILE.data['filePath'] = new_file_path
+        FILE.data['metadata'] = metadata_for_new_file
         return {}
 
 

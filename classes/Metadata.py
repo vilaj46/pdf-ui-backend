@@ -4,7 +4,11 @@ import json
 class Metadata:
     def __init__(self, metadata):
         self.metadata = metadata
-        self.keywords = json.loads(self.metadata['keywords'])
+        self.keywords = {}
+        try:
+            self.keywords = json.loads(self.metadata['keywords'])
+        except:
+            self.keywords = self.metadata['keywords']
 
     def page_has_header(self, page_number):
         try:
