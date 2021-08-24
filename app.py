@@ -1,4 +1,4 @@
-# from api import headers
+import os
 from api import FILE
 from flask import Flask, request, send_file, make_response
 from flask_cors import CORS
@@ -33,6 +33,7 @@ def upload_route():
         # return send_file("./tmp/test.pdf")
         res = make_response(send_file("./tmp/test.pdf"))
         res.headers['X-PageCount'] = page_count
+        print(os.listdir())
         return res
     elif request.method == 'PUT':
         FILE.close()
