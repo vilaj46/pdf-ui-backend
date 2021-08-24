@@ -13,4 +13,4 @@ def get_tmp_path():
         # For heroku
         filename = tf.name.rindex("/")
         name = tf.name[filename + 1: len(tf.name)]
-        return "./tmp/" + name + ".pdf"
+        return "/tmp/" + name + ".pdf"
