@@ -15,8 +15,6 @@ class File:
         self.doc = {}
 
     def upload(self, file_storage):
-        # global file
-
         file_name = file_storage.filename
 
         allow_file = allowed_file(file_name)
@@ -76,74 +74,6 @@ class File:
         else:
             # File is closed!.
             open_the = "file"
-
-    # def add_header_helper(self, metadata, text, page_number):
-    #     """
-    #         "${page}": {
-    #             "${page_number}": int - page number || -1 if None.
-    #             "header": str - header text || ""
-    #         }
-    #     """
-    #     keywords = metadata["keywords"]
-    #     page_number_to_str = str(page_number)
-    #     if keywords[page_number_to_str]:
-    #         keywords[page_number_to_str]["header"] = text
-    #     else:
-    #         keywords[page_number_to_str] = {
-    #             "page_number": -1,
-    #             "header": text
-    #         }
-    #     metadata["keywords"] = keywords
-
-    #     return metadata
-
-    # ---------------------------------------------------
-
-    # def create_header_rect(self):
-    #     return fitz.Rect(0, 33, 612, 100)
-
-    # def add_header(self, header, auto_spacing, multiple):
-    #     if multiple == True:
-    #         start_page = int(header.data['startPage'])
-    #         end_page = int(header.data['endPage'])
-    #         for i in range(start_page - 1, end_page):
-    #             self.add_header_meat(header, i, auto_spacing)
-    #     else:
-    #         start_page = int(header.data['startPage'])
-    #         self.add_header_meat(header, start_page - 1, auto_spacing)
-
-    # def add_header_meat(self, header, page_number, auto_spacing):
-    #     self.doc = fitz.open(self.data['filePath'], filetype="pdf")
-    #     page = self.doc.loadPage(page_number)
-
-    #     detected = self.detect_if_header_exists(page_number)
-
-    #     if detected == True:
-    #         self.doc = fitz.open(self.data['filePath'])
-    #         page = self.doc.loadPage(page_number)
-
-    #     m_d = Metadata(self.doc.metadata)
-
-    #     if auto_spacing == True:
-    #         header_auto_spaced = header.data['autoSpaced']
-    #         self.custom_insert_text_box(page, header_auto_spaced)
-    #         m_d.add_header(page_number, header_auto_spaced)
-    #     else:
-    #         header_text = header.data['text']
-    #         self.custom_insert_text_box(page, header_text)
-    #         m_d.add_header(page_number, header_text)
-
-    #     m_d.update_creator()
-
-    #     self.doc.setMetadata(m_d.metadata)
-
-    #     self.doc.saveIncr()
-    #     self.doc.close()
-
-    # def custom_insert_text_box(self, page, text):
-    #     rect = self.create_header_rect()
-    #     page.insertTextbox(
-    #         rect, text, fontsize=12, fontname='Times-Bold', align=1)
 
     def detect_if_header_exists(self, page_number):
         # Check if header_text has a length greater than 0.

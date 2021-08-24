@@ -31,10 +31,9 @@ def upload_route():
     if request.method == "POST":
         FILE.upload(request.files['file'])
         page_count = FILE.data["pageCount"]
-        # return send_file("./tmp/test.pdf")
-        res = make_response(send_file("./tmp/test.pdf"))
+        file_path = FILE.data['filePath']
+        res = make_response(send_file(file_path))
         res.headers['X-PageCount'] = page_count
-        # print(os.listdir("./tmp"))
         return res
     elif request.method == 'PUT':
         FILE.close()
@@ -49,9 +48,8 @@ def upload_route():
 def apply_headers_route():
     headers = request.form["headers"]
     NewHeaders.applyHeaders(headers)
-    testing = fitz.open("./tmp/test.pdf", filetype="pdf")
-    print(testing.metadata)
-    return send_file("./tmp/test.pdf")
+    file_path = FILE.data['filePath']
+    return send_file(file_path)
 
 
 @app.route('/pageNumbers/apply', methods=['POST'])
