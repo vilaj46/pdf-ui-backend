@@ -5,6 +5,7 @@ from api import FILE
 from classes.Metadata import Metadata
 from classes.Redactor import Redactor
 from utilities.misc.create_header_rect import create_header_rect
+from utilities.misc.get_tmp_path import get_tmp_path
 
 
 class NewHeaders:
@@ -87,8 +88,10 @@ class NewHeaders:
 
                     open_file.setMetadata(new_metadata)
 
-        open_file.saveIncr()
-        open_file.close()
+        # open_file.saveIncr()
+        # open_file.close()
+        new_file_path = get_tmp_path()
+        open_file.save(new_file_path)
 
         return {}
 
