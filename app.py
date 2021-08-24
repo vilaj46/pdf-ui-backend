@@ -33,7 +33,7 @@ def upload_route():
         # return send_file("./tmp/test.pdf")
         res = make_response(send_file("./tmp/test.pdf"))
         res.headers['X-PageCount'] = page_count
-        print(os.listdir())
+        print(os.listdir("./tmp"))
         return res
     elif request.method == 'PUT':
         FILE.close()
