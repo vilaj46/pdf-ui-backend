@@ -35,7 +35,9 @@ def upload_route():
         res.headers['X-PageCount'] = page_count
         res.headers['X-fileName'] = file_name
         res.headers['X-filePath'] = file_path
-        res.headers['X-metadata'] = metadata
+        res.headers['Access-Control-Allow-Origin'] = '*'
+        res.headers['Access-Control-Expose-Headers'] = "X-Total-Results"
+        res.headers['X-metadata'] = json.dumps(metadata)
         FILE.close()  # Simulate heroku
         return res
     elif request.method == 'PUT':
