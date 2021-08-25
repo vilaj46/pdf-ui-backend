@@ -36,7 +36,8 @@ def upload_route():
         res.headers['X-fileName'] = file_name
         res.headers['X-filePath'] = file_path
         res.headers['Access-Control-Allow-Origin'] = '*'
-        res.headers['Access-Control-Expose-Headers'] = "X-Total-Results"
+        res.headers['Access-Control-Allow-Headers'] = '*'
+        res.headers['Access-Control-Expose-Headers'] = '*'
         res.headers['X-metadata'] = json.dumps(metadata)
         FILE.close()  # Simulate heroku
         return res
@@ -63,6 +64,9 @@ def apply_headers_route():
     res = make_response(send_file(new_file_path))
     res.headers['X-filePath'] = file_path
     res.headers['X-metadata'] = json.dumps(metadata)
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['Access-Control-Allow-Headers'] = '*'
+    res.headers['Access-Control-Expose-Headers'] = '*'
 
     FILE.close()  # Simulate heroku
     return res
@@ -83,6 +87,9 @@ def apply_page_numbers_route():
     res = make_response(send_file(new_file_path))
     res.headers['X-filePath'] = file_path
     res.headers['X-metadata'] = json.dumps(metadata)
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['Access-Control-Allow-Headers'] = '*'
+    res.headers['Access-Control-Expose-Headers'] = '*'
 
     FILE.close()  # Simulate heroku
     return res
