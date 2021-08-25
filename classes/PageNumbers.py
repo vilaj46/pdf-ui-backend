@@ -5,13 +5,14 @@ from api import FILE
 from classes.Metadata import Metadata
 from classes.Redactor import Redactor
 from utilities.misc.create_page_number_rect import create_page_number_rect
+from utilities.misc.get_tmp_path import get_tmp_path
 
 
 class PageNumbers:
     def apply_page_numbers(page_numbers):
         if FILE.data == {} or len(FILE.data.keys()) == 0:
             return
-
+        metadata_for_new_file = {}
         loaded_options = json.loads(page_numbers)
         page_range = loaded_options["range"]
         template = loaded_options["text"]
@@ -19,8 +20,7 @@ class PageNumbers:
         end_page = int(loaded_options["endPage"])
         open_file = fitz.open(FILE.data["filePath"], filetype="pdf")
 
-        metadata = open_file.metadata
-        m_d = Metadata(metadata)
+        m_d = Metadata(FILE.data["metadata"])
 
         if page_range == "all":
             page_count = open_file.pageCount
@@ -28,7 +28,6 @@ class PageNumbers:
             end_page = page_count + 1
         else:
             end_page = end_page + 1
-
         for i in range(start_page, end_page):
             page_number_appears_on = i - 1
 
@@ -55,9 +54,17 @@ class PageNumbers:
                 True, templated_page_number, page_number_appears_on, open_file)
 
             open_file.setMetadata(new_metadata)
+            metadata_for_new_file = new_metadata
 
-        open_file.saveIncr()
+        # open_file.saveIncr()
+        # open_file.close()
+        new_file_path = get_tmp_path()
+        open_file.setMetadata(metadata_for_new_file)
+        open_file.save(new_file_path)
         open_file.close()
+
+        FILE.data['filePath'] = new_file_path
+        FILE.data['metadata'] = metadata_for_new_file
 
 
 def use_template(template, number):

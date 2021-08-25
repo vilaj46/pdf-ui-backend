@@ -69,8 +69,21 @@ def apply_headers_route():
 @app.route('/pageNumbers/apply', methods=['POST'])
 def apply_page_numbers_route():
     page_numbers = request.form["pageNumbers"]
+    file_name = request.form["fileName"]
+    file_path = request.form["filePath"]
+    old_metadata = request.form["metadata"]
+    FILE.initialize_uploaded_document(file_name, file_path, old_metadata)
+
     PageNumbers.apply_page_numbers(page_numbers)
-    return send_file("./tmp/test.pdf")
+    new_file_path = FILE.data['filePath']
+    metadata = FILE.data['metadata']
+
+    res = make_response(send_file(new_file_path))
+    res.headers['X-filePath'] = file_path
+    res.headers['X-metadata'] = json.dumps(metadata)
+
+    FILE.close()  # Simulate heroku
+    return res
 
 
 # if __name__ == '__main__':

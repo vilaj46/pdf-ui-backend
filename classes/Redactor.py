@@ -41,7 +41,8 @@ class Redactor:
         try:
             self.page._wrapContents()
         except:
-            not_sure = "not_sure"
+            was_breaking = "in heroku"
+
         # geting the rect boxes which consists the matching email regex
         sensitive = self.get_sensitive_data(self.text_for_redaction, self.page.getText("text")
                                             .split('\n'))
